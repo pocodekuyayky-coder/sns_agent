@@ -6,7 +6,7 @@ def write_post(articles):
     
     # Geminiの設定
     genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-    model = genai.GenerativeModel("gemini-2.0-flash-lite")
+    model = genai.GenerativeModel("gemini-2.5-flash-lite")
     
     # ニュース一覧をテキスト化
     news_text = "\n".join([
