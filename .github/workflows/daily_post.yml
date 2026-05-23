@@ -3,6 +3,7 @@ name: 毎日自動投稿
 on:
   schedule:
     - cron: '0 21 * * *'  # 日本時間の朝6時
+  workflow_dispatch:  # ← この2行を追加！
 
 jobs:
   post:
