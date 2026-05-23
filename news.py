@@ -8,7 +8,7 @@ def fetch_news(topic="人工知能"):
         "q": topic,
         "sortBy": "publishedAt",
         "pageSize": 3,
-        "language": "jp",
+        "language": "ja",
         "apiKey": os.getenv("NEWS_API_KEY")
     }
     
