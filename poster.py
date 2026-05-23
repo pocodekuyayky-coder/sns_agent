@@ -12,5 +12,5 @@ def post_to_twitter(text):
     )
     
     api = tweepy.API(auth)
-    api.update_status(text=text)
+    api.update_status(status=text)
     print("✅ Xへの投稿が完了しました！")
