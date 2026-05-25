@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from news import fetch_news
 from writer import write_post
-from poster import post_to_twitter
+from poster import post_to_bluesky
 
 # .envファイルを読み込む
 load_dotenv()
@@ -16,7 +16,7 @@ def main():
     post_text = write_post(articles)
     
     print("\n📤 Step3: Xに投稿中...")
-    post_to_twitter(post_text)
+    post_to_bluesky(post_text)
     
     print("\n🎉 完了！今日の投稿が完了しました")
 
