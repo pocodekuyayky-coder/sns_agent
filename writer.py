@@ -7,25 +7,27 @@ def write_post(articles):
     genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
     model = genai.GenerativeModel("gemini-2.5-flash-lite")
     
-    # ニュースがある場合とない場合で分ける
     if articles:
-        news_text = "\n".join([f"・{a['title']}" for a in articles])
+        news_text = "\n".join([
+            f"・タイトル: {a['title']}\n  URL: {a['url']}"
+            for a in articles
+        ])
     else:
         news_text = "本日の注目AIトピックについて自由に投稿してください"
     
     prompt = f"""
 あなたはAI・テクノロジー専門のSNSライターです。
-以下を参考にBluesky投稿文を日本語で作成してください。
+以下のニュースを参考にBluesky投稿文を日本語で作成してください。
 
 条件：
-- 200文字以内（厳守）
+- 150文字以内（URLを含めるので短めに）
 - 読者が興味を持つ具体的な書き出し
-- ハッシュタグを2〜3個
+- ハッシュタグを2個
 - 絵文字を適度に使う
-- 投稿文のみ出力する（説明文・前置き・「〇〇」のような穴埋め表現は一切使わない）
-- 具体的なAIトピックを自分で考えて書く
+- 投稿文のみ出力する
+- 最後にニュースのURLを1つ載せる
 
-参考情報：
+参考ニュース：
 {news_text}
 """
     
