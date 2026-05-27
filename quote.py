@@ -14,10 +14,13 @@ def generate_quote():
 "Quote in English."
 
 - Author Name
-#quoteoftheday #AuthorName
+
 「日本語訳」
 
 - 作者名（日本語）
+
+
+#quoteoftheday #AuthorName
 
 条件：
 ・名言は短めで印象的なもの
