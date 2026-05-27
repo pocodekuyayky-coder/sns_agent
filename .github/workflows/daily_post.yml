@@ -2,8 +2,8 @@ name: 毎日自動投稿
 
 on:
   schedule:
-    - cron: '0 17 * * *'  # 日本時間の朝6時
-  workflow_dispatch:  # ← この2行を追加！
+    - cron: '0 17 * * *'  # 日本時間の朝2時
+  workflow_dispatch:
 
 jobs:
   post:
@@ -24,3 +24,9 @@ jobs:
           TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
           BLUESKY_EMAIL: ${{ secrets.BLUESKY_EMAIL }}
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+      - name: Keep alive
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git commit --allow-empty -m "Keep alive"
+          git push
