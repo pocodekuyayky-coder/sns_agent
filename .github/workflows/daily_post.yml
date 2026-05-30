@@ -30,5 +30,6 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git commit --allow-empty -m "Keep alive"
-          git push
+          git add quote_history.json || true
+          git commit -m "Update quote history" || true
+          git push || true
