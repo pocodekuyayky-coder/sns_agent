@@ -24,15 +24,18 @@ def generate_quote():
     model = genai.GenerativeModel("gemini-2.5-flash-lite")
 
     history = load_history()
-
-    # 直近30件の著者リストを作成
     recent_authors = [item["author"] for item in history[-30:] if "author" in item]
 
-    exclude_note = ""
-    if recent_authors:
-        exclude_note = f"\n\n【絶対禁止】以下の著者は使用禁止です（重複防止）：{', '.join(recent_authors)}\nこれらの著者を選んだ場合、システムエラーになります。必ず別の著者を選んでください。"
+    author = "Unknown"
+    quote_text = ""
 
-    prompt = f"""
+    max_retries = 5
+    for attempt in range(max_retries):
+        exclude_note = ""
+        if recent_authors:
+            exclude_note = f"\n\n【絶対禁止】以下の著者は使用禁止です：{', '.join(recent_authors)}\n必ず別の著者を選んでください。"
+
+        prompt = f"""
 今日の海外の偉人の名言をひとつ紹介してください。
 
 以下の順番・形式を厳守してください。
@@ -69,32 +72,45 @@ def generate_quote():
 AUTHOR_JSON:{{"author": "英語著者名"}}
 """
 
-    response = model.generate_content(prompt)
-    full_text = response.text.strip()
+        response = model.generate_content(prompt)
+        full_text = response.text.strip()
 
-    # AUTHOR_JSONを抽出して本文から除去
-    author = "Unknown"
-    lines = full_text.split("\n")
-    quote_lines = []
-    for line in lines:
-        if line.startswith("AUTHOR_JSON:"):
-            try:
-                json_str = line.replace("AUTHOR_JSON:", "").strip()
-                author_data = json.loads(json_str)
-                author = author_data.get("author", "Unknown")
-            except:
-                pass
-        else:
-            quote_lines.append(line)
+        # AUTHOR_JSONを抽出して本文から除去
+        author = "Unknown"
+        lines = full_text.split("\n")
+        quote_lines = []
+        for line in lines:
+            if line.startswith("AUTHOR_JSON:"):
+                try:
+                    json_str = line.replace("AUTHOR_JSON:", "").strip()
+                    author_data = json.loads(json_str)
+                    author = author_data.get("author", "Unknown")
+                except:
+                    pass
+            else:
+                quote_lines.append(line)
 
-    quote_text = "\n".join(quote_lines).strip()
+        quote_text = "\n".join(quote_lines).strip()
 
-    # 履歴に追加して保存
+        # 重複チェック：履歴にある著者なら再試行
+        if author in recent_authors:
+            print(f"⚠️ {author} は履歴にあるため再生成します（{attempt + 1}/{max_retries}）")
+            continue
+
+        # 重複なし：履歴に保存して返す
+        history.append({"author": author, "text": quote_text[:50]})
+        if len(history) > MAX_HISTORY:
+            history = history[-MAX_HISTORY:]
+        save_history(history)
+
+        print(f"✅ 名言を生成しました（著者: {author}）")
+        print(f"---\n{quote_text}\n---")
+        return quote_text
+
+    # 5回試してもダメなら最後のものをそのまま使う
+    print(f"⚠️ 重複回避できませんでしたが続行します（著者: {author}）")
     history.append({"author": author, "text": quote_text[:50]})
     if len(history) > MAX_HISTORY:
         history = history[-MAX_HISTORY:]
     save_history(history)
-
-    print(f"✅ 名言を生成しました（著者: {author}）")
-    print(f"---\n{quote_text}\n---")
     return quote_text
