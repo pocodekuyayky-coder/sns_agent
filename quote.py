@@ -9,7 +9,7 @@ MAX_HISTORY = 100  # 保持する履歴の最大件数
 def load_history():
     """過去の名言履歴を読み込む"""
     if Path(HISTORY_FILE).exists():
-        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+        with open(HISTORY_FILE, "r", encoding="utf-8-sig") as f:
             return json.load(f)
     return []
 
