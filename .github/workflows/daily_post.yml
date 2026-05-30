@@ -26,10 +26,10 @@ jobs:
           TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
           BLUESKY_EMAIL: ${{ secrets.BLUESKY_EMAIL }}
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
-      - name: Keep alive
+      - name: Save quote history
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add quote_history.json || true
-          git commit -m "Update quote history" || true
+          git diff --staged --quiet || git commit -m "Update quote history [skip ci]"
           git push || true

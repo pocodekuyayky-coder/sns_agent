@@ -1,13 +1,14 @@
 import google.generativeai as genai
 import os
 import json
-from datetime import datetime, timedelta
+from pathlib import Path
 
 HISTORY_FILE = "quote_history.json"
+MAX_HISTORY = 100  # 保持する履歴の最大件数
 
 def load_history():
     """過去の名言履歴を読み込む"""
-    if os.path.exists(HISTORY_FILE):
+    if Path(HISTORY_FILE).exists():
         with open(HISTORY_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     return []
@@ -17,29 +18,26 @@ def save_history(history):
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
 
-def clean_old_history(history):
-    """30日以上古い履歴を削除する"""
-    thirty_days_ago = (datetime.now() - timedelta(days=30)).isoformat()
-    return [h for h in history if h["date"] > thirty_days_ago]
-
 def generate_quote():
-    """名言を生成する"""
-    
+    """名言を生成する（重複防止付き）"""
     genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
     model = genai.GenerativeModel("gemini-2.5-flash-lite")
-    
-    # 履歴を読み込む
+
     history = load_history()
-    history = clean_old_history(history)
     
-    # 過去30日の使用済み人物リスト
-    used_authors = [h["author"] for h in history]
-    avoid_text = ""
-    if used_authors:
-        avoid_text = f"・以下の人物は過去30日以内に使用済みなので必ず避けてください：{', '.join(used_authors)}"
+    # 最近の著者リストを作成（プロンプトに渡す）
+    recent_authors = []
+    for item in history[-20:]:  # 直近20件の著者を除外
+        if "author" in item:
+            recent_authors.append(item["author"])
     
+    exclude_note = ""
+    if recent_authors:
+        exclude_note = f"\n・以下の人物は最近使用済みなので避けてください: {', '.join(recent_authors)}"
+
     prompt = f"""
 今日の海外の偉人の名言をひとつ紹介してください。
+
 以下の順番・形式を厳守してください。
 
 "Quote in English."
@@ -68,36 +66,38 @@ def generate_quote():
 ・感情に刺さる言葉を優先
 ・堅すぎる哲学系より、直感的に伝わる名言を優先
 ・出力はコピペしやすいようシンプルにする
-・300文字以内で収める
-{avoid_text}
+・300文字以内で収める{exclude_note}
 
-最後に必ず以下の形式で作者名を英語で出力してください（投稿文の後に改行して）：
-AUTHOR: 作者名（英語）
+最後に必ず以下の形式でJSONを1行だけ出力してください（本文の後に追加）:
+AUTHOR_JSON:{{"author": "英語著者名"}}
 """
-    
+
     response = model.generate_content(prompt)
     full_text = response.text.strip()
     
-    # AUTHOR行を抽出して履歴に保存
+    # AUTHOR_JSONを抽出して本文から除去
+    author = "Unknown"
     lines = full_text.split("\n")
-    author_line = ""
-    post_lines = []
+    quote_lines = []
     for line in lines:
-        if line.startswith("AUTHOR:"):
-            author_line = line.replace("AUTHOR:", "").strip()
+        if line.startswith("AUTHOR_JSON:"):
+            try:
+                json_str = line.replace("AUTHOR_JSON:", "").strip()
+                author_data = json.loads(json_str)
+                author = author_data.get("author", "Unknown")
+            except:
+                pass
         else:
-            post_lines.append(line)
+            quote_lines.append(line)
     
-    post_text = "\n".join(post_lines).strip()
+    quote_text = "\n".join(quote_lines).strip()
     
-    # 履歴に追加
-    if author_line:
-        history.append({
-            "author": author_line,
-            "date": datetime.now().isoformat()
-        })
-        save_history(history)
-    
-    print(f"✅ 名言を生成しました（使用済み: {len(used_authors)}人）")
-    print(f"---\n{post_text}\n---")
-    return post_text
+    # 履歴に追加して保存
+    history.append({"author": author, "text": quote_text[:50]})
+    if len(history) > MAX_HISTORY:
+        history = history[-MAX_HISTORY:]
+    save_history(history)
+
+    print(f"✅ 名言を生成しました（著者: {author}）")
+    print(f"---\n{quote_text}\n---")
+    return quote_text
