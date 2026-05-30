@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 HISTORY_FILE = "quote_history.json"
-MAX_HISTORY = 100  # 保持する履歴の最大件数
+MAX_HISTORY = 30  # 30日分保持
 
 def load_history():
     """過去の名言履歴を読み込む"""
@@ -24,16 +24,13 @@ def generate_quote():
     model = genai.GenerativeModel("gemini-2.5-flash-lite")
 
     history = load_history()
-    
-    # 最近の著者リストを作成（プロンプトに渡す）
-    recent_authors = []
-    for item in history[-20:]:  # 直近20件の著者を除外
-        if "author" in item:
-            recent_authors.append(item["author"])
-    
+
+    # 直近30件の著者リストを作成
+    recent_authors = [item["author"] for item in history[-30:] if "author" in item]
+
     exclude_note = ""
     if recent_authors:
-        exclude_note = f"\n・以下の人物は最近使用済みなので避けてください: {', '.join(recent_authors)}"
+        exclude_note = f"\n\n【絶対禁止】以下の著者は使用禁止です（重複防止）：{', '.join(recent_authors)}\nこれらの著者を選んだ場合、システムエラーになります。必ず別の著者を選んでください。"
 
     prompt = f"""
 今日の海外の偉人の名言をひとつ紹介してください。
@@ -74,7 +71,7 @@ AUTHOR_JSON:{{"author": "英語著者名"}}
 
     response = model.generate_content(prompt)
     full_text = response.text.strip()
-    
+
     # AUTHOR_JSONを抽出して本文から除去
     author = "Unknown"
     lines = full_text.split("\n")
@@ -89,9 +86,9 @@ AUTHOR_JSON:{{"author": "英語著者名"}}
                 pass
         else:
             quote_lines.append(line)
-    
+
     quote_text = "\n".join(quote_lines).strip()
-    
+
     # 履歴に追加して保存
     history.append({"author": author, "text": quote_text[:50]})
     if len(history) > MAX_HISTORY:
