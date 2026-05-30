@@ -1,37 +1,116 @@
-name: 毎日自動投稿
+import google.generativeai as genai
+import os
+import json
+from pathlib import Path
 
-on:
-  schedule:
-    - cron: '0 17 * * *'  # 日本時間の朝2時
-  workflow_dispatch:
+HISTORY_FILE = "quote_history.json"
+MAX_HISTORY = 30  # 30日分保持
 
-jobs:
-  post:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      - run: pip install google-generativeai requests tweepy python-dotenv atproto
-      - run: python main.py
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
-          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
-          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
-          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
-          TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
-          BLUESKY_EMAIL: ${{ secrets.BLUESKY_EMAIL }}
-          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
-      - name: Save quote history
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git add quote_history.json || true
-          git diff --staged --quiet || git commit -m "Update quote history [skip ci]"
-          git push || true
+def load_history():
+    """過去の名言履歴を読み込む"""
+    if Path(HISTORY_FILE).exists():
+        with open(HISTORY_FILE, "r", encoding="utf-8-sig") as f:
+            return json.load(f)
+    return []
+
+def save_history(history):
+    """名言履歴を保存する"""
+    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(history, f, ensure_ascii=False, indent=2)
+
+def generate_quote():
+    """名言を生成する（重複防止付き）"""
+    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+    model = genai.GenerativeModel("gemini-2.5-flash-lite")
+
+    history = load_history()
+    recent_authors = [item["author"] for item in history[-30:] if "author" in item]
+
+    author = "Unknown"
+    quote_text = ""
+
+    max_retries = 5
+    for attempt in range(max_retries):
+        exclude_note = ""
+        if recent_authors:
+            exclude_note = f"\n\n【絶対禁止】以下の著者は使用禁止です：{', '.join(recent_authors)}\n必ず別の著者を選んでください。"
+
+        prompt = f"""
+今日の海外の偉人の名言をひとつ紹介してください。
+
+以下の順番・形式を厳守してください。
+
+"Quote in English."
+
+- Author Name
+
+「日本語訳」
+
+- 作者名（日本語）
+
+#quoteoftheday #AuthorName
+
+条件：
+・名言は短めで印象的なもの
+・ビジネス、人生、習慣、挑戦、継続、リーダーシップに関する名言を優先
+・英語は自然で有名な原文を使用
+・記号は「-」（半角ダッシュ）を使用
+・余計な解説は不要
+・" "は半角ダブルクォーテーションを使用
+・名言と人名の間は1行空ける
+・5回に1回以上は女性
+・5回に1回は東洋人
+・できるだけ知名度が高く、SNS投稿向きの名言を選ぶ
+・全体を読みやすく改行する
+・スマホ表示で見やすい文字量にする
+・感情に刺さる言葉を優先
+・堅すぎる哲学系より、直感的に伝わる名言を優先
+・出力はコピペしやすいようシンプルにする
+・300文字以内で収める{exclude_note}
+
+最後に必ず以下の形式でJSONを1行だけ出力してください（本文の後に追加）:
+AUTHOR_JSON:{{"author": "英語著者名"}}
+"""
+
+        response = model.generate_content(prompt)
+        full_text = response.text.strip()
+
+        # AUTHOR_JSONを抽出して本文から除去
+        author = "Unknown"
+        lines = full_text.split("\n")
+        quote_lines = []
+        for line in lines:
+            if line.startswith("AUTHOR_JSON:"):
+                try:
+                    json_str = line.replace("AUTHOR_JSON:", "").strip()
+                    author_data = json.loads(json_str)
+                    author = author_data.get("author", "Unknown")
+                except:
+                    pass
+            else:
+                quote_lines.append(line)
+
+        quote_text = "\n".join(quote_lines).strip()
+
+        # 重複チェック：履歴にある著者なら再試行
+        if author in recent_authors:
+            print(f"⚠️ {author} は履歴にあるため再生成します（{attempt + 1}/{max_retries}）")
+            continue
+
+        # 重複なし：履歴に保存して返す
+        history.append({"author": author, "text": quote_text[:50]})
+        if len(history) > MAX_HISTORY:
+            history = history[-MAX_HISTORY:]
+        save_history(history)
+
+        print(f"✅ 名言を生成しました（著者: {author}）")
+        print(f"---\n{quote_text}\n---")
+        return quote_text
+
+    # 5回試してもダメなら最後のものをそのまま使う
+    print(f"⚠️ 重複回避できませんでしたが続行します（著者: {author}）")
+    history.append({"author": author, "text": quote_text[:50]})
+    if len(history) > MAX_HISTORY:
+        history = history[-MAX_HISTORY:]
+    save_history(history)
+    return quote_text
