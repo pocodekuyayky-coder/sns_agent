@@ -2,7 +2,7 @@
 
 on:
   schedule:
-    - cron: '0 17 * * *'  # 日本時間の朝2時
+    - cron: '0 16 * * *'  # 日本時間の朝2時
   workflow_dispatch:
 
 jobs:
