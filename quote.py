@@ -22,7 +22,6 @@ def extract_author(text):
         line = line.strip()
         if line.startswith("- ") and not line.startswith("- 作者") and not line.startswith("- ス") and not line.startswith("- 「"):
             candidate = line[2:].strip()
-            # 日本語を含まない行を著者名とみなす
             if candidate and not any('\u3000' <= c <= '\u9fff' for c in candidate):
                 return candidate
     return "Unknown"
@@ -37,10 +36,10 @@ def generate_quote():
     author = "Unknown"
     quote_text = ""
 
-    for attempt in range(5):
+    for attempt in range(10):
         exclude_note = ""
         if recent_authors:
-            exclude_note = f"\n\n【絶対禁止】以下の著者は使用禁止です：{', '.join(recent_authors)}\n必ず別の著者を選んでください。"
+            exclude_note = f"\n\n【絶対禁止】以下の著者は使用禁止です：{', '.join(recent_authors)}\n必ず別の著者を選んでください。Steve Jobs、Winston Churchill、Nelson Mandela、Eleanor Rooseveltなどの頻出人物は避け、あまり知られていない偉人や現代の著名人も積極的に選んでください。"
 
         prompt = f"""
 今日の海外の偉人の名言をひとつ紹介してください。
@@ -84,7 +83,7 @@ def generate_quote():
 
         if author in recent_authors:
             print(f"⚠️ {author} は履歴にあるため再生成します")
-            recent_authors.append(author)  # この行を追加
+            recent_authors.append(author)
             continue
 
         break
