@@ -84,6 +84,7 @@ def generate_quote():
 
         if author in recent_authors:
             print(f"⚠️ {author} は履歴にあるため再生成します")
+            recent_authors.append(author)  # この行を追加
             continue
 
         break
