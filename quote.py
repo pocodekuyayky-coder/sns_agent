@@ -4,33 +4,40 @@ import json
 from pathlib import Path
 
 HISTORY_FILE = "quote_history.json"
-MAX_HISTORY = 30  # 30日分保持
+MAX_HISTORY = 30
 
 def load_history():
-    """過去の名言履歴を読み込む"""
     if Path(HISTORY_FILE).exists():
         with open(HISTORY_FILE, "r", encoding="utf-8-sig") as f:
             return json.load(f)
     return []
 
 def save_history(history):
-    """名言履歴を保存する"""
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
 
+def extract_author(text):
+    """投稿テキストから著者名を抽出する"""
+    for line in text.split("\n"):
+        line = line.strip()
+        if line.startswith("- ") and not line.startswith("- 作者") and not line.startswith("- ス") and not line.startswith("- 「"):
+            candidate = line[2:].strip()
+            # 日本語を含まない行を著者名とみなす
+            if candidate and not any('\u3000' <= c <= '\u9fff' for c in candidate):
+                return candidate
+    return "Unknown"
+
 def generate_quote():
-    """名言を生成する（重複防止付き）"""
     genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
     model = genai.GenerativeModel("gemini-2.5-flash-lite")
 
     history = load_history()
-    recent_authors = [item["author"] for item in history[-30:] if "author" in item]
+    recent_authors = [item["author"] for item in history[-30:] if "author" in item and item["author"] != "Unknown"]
 
     author = "Unknown"
     quote_text = ""
 
-    max_retries = 5
-    for attempt in range(max_retries):
+    for attempt in range(5):
         exclude_note = ""
         if recent_authors:
             exclude_note = f"\n\n【絶対禁止】以下の著者は使用禁止です：{', '.join(recent_authors)}\n必ず別の著者を選んでください。"
@@ -67,50 +74,25 @@ def generate_quote():
 ・堅すぎる哲学系より、直感的に伝わる名言を優先
 ・出力はコピペしやすいようシンプルにする
 ・300文字以内で収める{exclude_note}
-
-最後に必ず以下の形式でJSONを1行だけ出力してください（本文の後に追加）:
-AUTHOR_JSON:{{"author": "英語著者名"}}
 """
 
         response = model.generate_content(prompt)
-        full_text = response.text.strip()
+        quote_text = response.text.strip()
+        author = extract_author(quote_text)
 
-        # AUTHOR_JSONを抽出して本文から除去
-        author = "Unknown"
-        lines = full_text.split("\n")
-        quote_lines = []
-        for line in lines:
-            if line.startswith("AUTHOR_JSON:"):
-                try:
-                    json_str = line.replace("AUTHOR_JSON:", "").strip()
-                    author_data = json.loads(json_str)
-                    author = author_data.get("author", "Unknown")
-                except:
-                    pass
-            else:
-                quote_lines.append(line)
+        print(f"試行{attempt + 1}: 著者={author}")
 
-        quote_text = "\n".join(quote_lines).strip()
-
-        # 重複チェック：履歴にある著者なら再試行
         if author in recent_authors:
-            print(f"⚠️ {author} は履歴にあるため再生成します（{attempt + 1}/{max_retries}）")
+            print(f"⚠️ {author} は履歴にあるため再生成します")
             continue
 
-        # 重複なし：履歴に保存して返す
-        history.append({"author": author, "text": quote_text[:50]})
-        if len(history) > MAX_HISTORY:
-            history = history[-MAX_HISTORY:]
-        save_history(history)
+        break
 
-        print(f"✅ 名言を生成しました（著者: {author}）")
-        print(f"---\n{quote_text}\n---")
-        return quote_text
-
-    # 5回試してもダメなら最後のものをそのまま使う
-    print(f"⚠️ 重複回避できませんでしたが続行します（著者: {author}）")
     history.append({"author": author, "text": quote_text[:50]})
     if len(history) > MAX_HISTORY:
         history = history[-MAX_HISTORY:]
     save_history(history)
+
+    print(f"✅ 名言を生成しました（著者: {author}）")
+    print(f"---\n{quote_text}\n---")
     return quote_text
