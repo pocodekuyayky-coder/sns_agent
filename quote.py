@@ -1,6 +1,7 @@
 import google.generativeai as genai
 import os
 import json
+import time
 from pathlib import Path
 
 HISTORY_FILE = "quote_history.json"
@@ -36,7 +37,7 @@ def generate_quote():
     author = "Unknown"
     quote_text = ""
 
-    for attempt in range(10):
+    for attempt in range(3):
         exclude_note = ""
         if recent_authors:
             exclude_note = f"\n\n【絶対禁止】以下の著者は使用禁止です：{', '.join(recent_authors)}\n必ず別の著者を選んでください。Steve Jobs、Winston Churchill、Nelson Mandela、Eleanor Rooseveltなどの頻出人物は避け、あまり知られていない偉人や現代の著名人も積極的に選んでください。"
@@ -84,6 +85,7 @@ def generate_quote():
         if author in recent_authors:
             print(f"⚠️ {author} は履歴にあるため再生成します")
             recent_authors.append(author)
+            time.sleep(10)
             continue
 
         break
