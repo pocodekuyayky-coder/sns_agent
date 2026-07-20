@@ -4,10 +4,6 @@
     "text": "\"The only way to do great work is to love what you"
   },
   {
-    "author": "Steve Jobs",
-    "text": "\"The only way to do great work is to love what you"
-  },
-  {
     "author": "Buddha",
     "text": "\"The mind is everything. What you think you become"
   },
@@ -118,5 +114,9 @@
   {
     "author": "William Shakespeare",
     "text": "\"It is not in the stars to hold our destiny but in"
+  },
+  {
+    "author": "Peter Drucker",
+    "text": "\"The best way to predict the future is to create i"
   }
 ]
