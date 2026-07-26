@@ -4,10 +4,6 @@
     "text": "\"The only way to do great work is to love what you"
   },
   {
-    "author": "Steve Jobs",
-    "text": "\"The only way to do great work is to love what you"
-  },
-  {
     "author": "Peter Drucker",
     "text": "\"The best way to predict the future is to create i"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Charles Darwin",
     "text": "\"It is not the strongest of the species that survi"
+  },
+  {
+    "author": "Alvin Toffler",
+    "text": "\"The illiterate of the 21st century will not be th"
   }
 ]
