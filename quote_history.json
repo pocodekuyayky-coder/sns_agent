@@ -1,9 +1,5 @@
 [
   {
-    "author": "Nelson Mandela",
-    "text": "\"The greatest glory in living lies not in never fa"
-  },
-  {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Buddha",
     "text": "\"The mind is everything. What you think you become"
+  },
+  {
+    "author": "Nelson Mandela",
+    "text": "\"The greatest glory in living lies not in never fa"
   }
 ]
