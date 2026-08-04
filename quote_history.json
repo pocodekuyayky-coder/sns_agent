@@ -1,9 +1,5 @@
 [
   {
-    "author": "Alan Kay",
-    "text": "\"The best way to predict the future is to invent i"
-  },
-  {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
   },
@@ -114,6 +110,10 @@
   {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
+  },
+  {
+    "author": "Peter Drucker",
+    "text": "\"The best way to predict the future is to create i"
   },
   {
     "author": "Peter Drucker",
