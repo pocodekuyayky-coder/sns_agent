@@ -1,9 +1,5 @@
 [
   {
-    "author": "Oprah Winfrey",
-    "text": "\"The biggest adventure you can take is to live the"
-  },
-  {
     "author": "Winston Churchill",
     "text": "\"Success is not final, failure is not fatal: it is"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Steve Jobs (Already excluded)",
     "text": "\"The only way to do great work is to love what you"
+  },
+  {
+    "author": "Alan Kay",
+    "text": "\"The best way to predict the future is to invent i"
   }
 ]
