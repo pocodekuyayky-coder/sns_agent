@@ -1,9 +1,5 @@
 [
   {
-    "author": "Winston Churchill",
-    "text": "\"Success is not final, failure is not fatal: it is"
-  },
-  {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Alan Kay",
     "text": "\"The best way to predict the future is to invent i"
+  },
+  {
+    "author": "Eleanor Roosevelt",
+    "text": "\"The future belongs to those who believe in the be"
   }
 ]
