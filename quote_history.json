@@ -4,10 +4,6 @@
     "text": "\"The only way to do great work is to love what you"
   },
   {
-    "author": "Steve Jobs",
-    "text": "\"The only way to do great work is to love what you"
-  },
-  {
     "author": "Lao Tzu",
     "text": "\"The mind is everything. What you think you become"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Winston Churchill",
     "text": "\"Success is not final, failure is not fatal: It is"
+  },
+  {
+    "author": "Alvin Toffler",
+    "text": "\"The illiterate of the 21st century will not be th"
   }
 ]
