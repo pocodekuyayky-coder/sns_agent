@@ -1,9 +1,5 @@
 [
   {
-    "author": "Steve Jobs",
-    "text": "\"The only way to do great work is to love what you"
-  },
-  {
     "author": "Lao Tzu",
     "text": "\"The mind is everything. What you think you become"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Alvin Toffler",
     "text": "\"The illiterate of the 21st century will not be th"
+  },
+  {
+    "author": "Nelson Mandela",
+    "text": "\"The greatest glory in living lies not in never fa"
   }
 ]
