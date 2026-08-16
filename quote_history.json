@@ -1,9 +1,5 @@
 [
   {
-    "author": "Lao Tzu",
-    "text": "\"The mind is everything. What you think you become"
-  },
-  {
     "author": "Nelson Mandela",
     "text": "\"The greatest glory in living lies not in never fa"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Nelson Mandela",
     "text": "\"The greatest glory in living lies not in never fa"
+  },
+  {
+    "author": "Eleanor Roosevelt",
+    "text": "\"The future belongs to those who believe in the be"
   }
 ]
