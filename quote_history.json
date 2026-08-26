@@ -1,9 +1,5 @@
 [
   {
-    "author": "Unknown",
-    "text": "\"The only way to do great work is to love what you"
-  },
-  {
     "author": "Charles Darwin",
     "text": "\"It is not the strongest of the species that survi"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Jimmy Johnson",
     "text": "\"The difference between ordinary and extraordinary"
+  },
+  {
+    "author": "Steve Jobs",
+    "text": "\"The only way to do great work is to love what you"
   }
 ]
