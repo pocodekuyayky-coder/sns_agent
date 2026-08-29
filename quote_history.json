@@ -1,9 +1,5 @@
 [
   {
-    "author": "J.K. Rowling",
-    "text": "\"It is impossible to live without failing at somet"
-  },
-  {
     "author": "Nelson Mandela",
     "text": "\"The greatest glory in living lies not in never fa"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Nelson Mandela",
     "text": "\"The greatest glory in living lies not in never fa"
+  },
+  {
+    "author": "Peter Drucker",
+    "text": "\"The best way to predict the future is to create i"
   }
 ]
