@@ -1,9 +1,5 @@
 [
   {
-    "author": "Alvin Toffler",
-    "text": "\"The illiterate of the 21st century will not be th"
-  },
-  {
     "author": "J.K. Rowling",
     "text": "\"It is impossible to live without failing at somet"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Buddha",
     "text": "\"The mind is everything. What you think you become"
+  },
+  {
+    "author": "Nelson Mandela",
+    "text": "\"The greatest glory in living lies not in never fa"
   }
 ]
