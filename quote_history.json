@@ -1,9 +1,5 @@
 [
   {
-    "author": "Steve Jobs",
-    "text": "\"The only way to do great work is to love what you"
-  },
-  {
     "author": "Peter Drucker",
     "text": "\"The best way to predict the future is to create i"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Buddha",
     "text": "\"The mind is everything. What you think you become"
+  },
+  {
+    "author": "Eleanor Roosevelt",
+    "text": "\"The future belongs to those who believe in the be"
   }
 ]
