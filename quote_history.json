@@ -1,9 +1,5 @@
 [
   {
-    "author": "Steve Jobs",
-    "text": "\"The only way to do great work is to love what you"
-  },
-  {
     "author": "Steve Jobs (Already excluded)",
     "text": "\"The only way to do great work is to love what you"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
+  },
+  {
+    "author": "Jimmy Johnson",
+    "text": "\"The difference between ordinary and extraordinary"
   }
 ]
