@@ -1,9 +1,5 @@
 [
   {
-    "author": "Steve Jobs (already excluded)",
-    "text": "\"The only way to do great work is to love what you"
-  },
-  {
     "author": "Mahatma Gandhi",
     "text": "\"The mind is everything. What you think you become"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Alan Kay",
     "text": "\"The best way to predict the future is to invent i"
+  },
+  {
+    "author": "Nelson Mandela",
+    "text": "\"The greatest glory in living lies not in never fa"
   }
 ]
