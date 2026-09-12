@@ -1,9 +1,5 @@
 [
   {
-    "author": "Mahatma Gandhi",
-    "text": "\"The mind is everything. What you think you become"
-  },
-  {
     "author": "Winston Churchill",
     "text": "\"Success is not final, failure is not fatal: It is"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Nelson Mandela",
     "text": "\"The greatest glory in living lies not in never fa"
+  },
+  {
+    "author": "Lao Tzu",
+    "text": "\"The journey of a thousand miles begins with a sin"
   }
 ]
