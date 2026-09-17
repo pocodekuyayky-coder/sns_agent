@@ -1,9 +1,5 @@
 [
   {
-    "author": "Nelson Mandela",
-    "text": "\"The greatest glory in living lies not in never fa"
-  },
-  {
     "author": "Eleanor Roosevelt",
     "text": "\"The future belongs to those who believe in the be"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
+  },
+  {
+    "author": "Lao Tzu",
+    "text": "\"The journey of a thousand miles begins with a sin"
   }
 ]
