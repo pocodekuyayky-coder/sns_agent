@@ -1,9 +1,5 @@
 [
   {
-    "author": "Ayn Rand",
-    "text": "\"The question isn't who is going to let me; it's w"
-  },
-  {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Jimmy Johnson",
     "text": "\"The difference between ordinary and extraordinary"
+  },
+  {
+    "author": "Steve Jobs",
+    "text": "\"The only way to do great work is to love what you"
   }
 ]
