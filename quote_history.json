@@ -1,9 +1,5 @@
 [
   {
-    "author": "Nelson Mandela",
-    "text": "\"The greatest glory in living lies not in never fa"
-  },
-  {
     "author": "Jimmy Johnson",
     "text": "\"The difference between ordinary and extraordinary"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Mahatma Gandhi",
     "text": "\"The mind is everything. What you think you become"
+  },
+  {
+    "author": "Charles Darwin",
+    "text": "\"It is not the strongest of the species that survi"
   }
 ]
