@@ -1,9 +1,5 @@
 [
   {
-    "author": "Jimmy Johnson",
-    "text": "\"The difference between ordinary and extraordinary"
-  },
-  {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Charles Darwin",
     "text": "\"It is not the strongest of the species that survi"
+  },
+  {
+    "author": "Nelson Mandela",
+    "text": "\"The greatest glory in living lies not in never fa"
   }
 ]
