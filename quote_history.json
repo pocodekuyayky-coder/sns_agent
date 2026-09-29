@@ -1,9 +1,5 @@
 [
   {
-    "author": "Buddha",
-    "text": "\"The mind is everything. What you think you become"
-  },
-  {
     "author": "Nelson Mandela",
     "text": "\"The greatest glory in living lies not in never fa"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Henry David Thoreau",
     "text": "\"The price of anything is the amount of life you e"
+  },
+  {
+    "author": "Steve Jobs",
+    "text": "\"The only way to do great work is to love what you"
   }
 ]
