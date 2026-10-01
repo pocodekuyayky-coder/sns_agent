@@ -1,9 +1,5 @@
 [
   {
-    "author": "Peter Drucker",
-    "text": "\"The best way to predict the future is to create i"
-  },
-  {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Mark Zuckerberg",
     "text": "\"The biggest risk is not taking any risk. In a wor"
+  },
+  {
+    "author": "Steve Jobs",
+    "text": "\"The only way to do great work is to love what you"
   }
 ]
