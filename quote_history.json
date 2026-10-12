@@ -1,9 +1,5 @@
 [
   {
-    "author": "Eleanor Roosevelt",
-    "text": "\"The future belongs to those who believe in the be"
-  },
-  {
     "author": "Alan Kay",
     "text": "\"The best way to predict the future is to invent i"
   },
@@ -117,6 +113,10 @@
   },
   {
     "author": "Buddha",
+    "text": "\"The only way to do great work is to love what you"
+  },
+  {
+    "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
   }
 ]
