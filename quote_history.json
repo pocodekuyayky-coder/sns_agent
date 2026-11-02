@@ -1,9 +1,5 @@
 [
   {
-    "author": "Peter Drucker",
-    "text": "\"The best way to predict the future is to create i"
-  },
-  {
     "author": "Nelson Mandela",
     "text": "\"The greatest glory in living lies not in never fa"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Peter Drucker",
     "text": "\"The best way to predict the future is to create i"
+  },
+  {
+    "author": "Nelson Mandela",
+    "text": "\"The greatest glory in living lies not in never fa"
   }
 ]
