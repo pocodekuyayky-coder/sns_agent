@@ -1,9 +1,5 @@
 [
   {
-    "author": "Oprah Winfrey",
-    "text": "\"The biggest adventure you can take is to live the"
-  },
-  {
     "author": "Steve Jobs",
     "text": "\"The only way to do great work is to love what you"
   },
@@ -118,5 +114,9 @@
   {
     "author": "Peter Drucker",
     "text": "\"The best way to predict the future is to create i"
+  },
+  {
+    "author": "Alvin Toffler",
+    "text": "\"The illiterate of the 21st century will not be th"
   }
 ]
